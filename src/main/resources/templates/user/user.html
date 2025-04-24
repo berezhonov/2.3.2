@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>User Information</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <style>
+        body {
+            background-color: #99b0ca;
+        }
+        h2, h4 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h2>User Information Page</h2>
+<form method="get">
+    <h4>
+        User's ID: <span th:utext="${user.id}"></span><br>
+        User's First Name: <span th:utext="${user.username}"></span><br><br>
+        User's Last Name: <span th:utext="${user.lastname}"></span><br>
+        User's Email: <span th:utext="${user.email}"></span><br>
+        User's Age: <span th:utext="${user.age}"></span><br>
+        <strong>Roles:</strong>
+        <span th:if="${user?.roles}" th:each="role : ${user.roles}" th:text="${role.name.substring(5)} + ' '"></span>
+        <span th:unless="${user?.roles}">N/A</span>
+    </h4>
+</form>
+
+<!-- Logout form -->
+<form th:action="@{/logout}" method="post" style="text-align: center;">
+    <input type="submit" value="Logout"/>
+</form>
+</body>
+</html>
