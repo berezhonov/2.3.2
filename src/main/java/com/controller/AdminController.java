@@ -7,17 +7,14 @@ import com.model.User;
 import com.service.UserService;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     private final UserService userService;
 
     public AdminController(UserService userService) {
-        logger.info("hello from AdminController");
         this.userService = userService;
     }
 
@@ -25,7 +22,6 @@ public class AdminController {
     public String getUsers(Model model) {
         model.addAttribute("userList", userService.findAll());
         model.addAttribute("allRoles", userService.getAllRoles());
-        logger.info("getUsers method called in AdminController");
         return "admin/users";
     }
 
@@ -40,7 +36,6 @@ public class AdminController {
                 new User(username, lastname, age, email),
                 password,
                 roleNames);
-        logger.info("addUser method  from AdminController");
         return "redirect:/admin";
     }
 
@@ -48,7 +43,6 @@ public class AdminController {
     public String showUserUpdatePage(@RequestParam("id") Long id,
                                      Model model) {
         model.addAllAttributes(userService.makeAllUserModelAttributes(id));
-        logger.info("showUserUpdatePage method from AdminController");
         return "admin/update";
     }
 
@@ -65,21 +59,18 @@ public class AdminController {
                 new User(username, lastname, age, email),
                 password,
                 roleNames);
-        logger.info("updateUser from AdminController");
         return "redirect:/admin";
     }
 
     @PostMapping("/delete")
     public String deleteUser(@RequestParam Long id) {
         userService.delete(id);
-        logger.info("deleteUser method in AdminController");
         return "redirect:/admin";
     }
 
-    @GetMapping("/user/{id}")
-    public String findUserById(@PathVariable Long id, Model model) {
+    @GetMapping("/user")
+    public String findUserById(@RequestParam("id") Long id, Model model) {
         model.addAttribute("user", userService.findById(id));
-        logger.info("getUser called in AdminController and it almost done");
         return "user/user";
     }
 }
