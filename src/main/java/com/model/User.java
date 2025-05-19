@@ -17,8 +17,8 @@ public class User implements UserDetails {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "name")
+    private String firstname;
 
     @Column(name = "lastname")
     private String lastname;
@@ -42,8 +42,8 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String lastname, Integer age, String email) {
-        this.username = username;
+    public User(String firstname, String lastname, Integer age, String email) {
+        this.firstname = firstname;
         this.lastname = lastname;
         this.age = age;
         this.email = email;
@@ -95,16 +95,21 @@ public class User implements UserDetails {
         return password;
     }
 
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     public String getEmail() {
@@ -135,11 +140,11 @@ public class User implements UserDetails {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(lastname, user.lastname) && Objects.equals(age, user.age) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
+        return Objects.equals(id, user.id) && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname) && Objects.equals(age, user.age) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, lastname, age, email, password);
+        return Objects.hash(id, firstname, lastname, age, email, password);
     }
 }

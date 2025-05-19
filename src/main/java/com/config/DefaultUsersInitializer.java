@@ -30,13 +30,13 @@ public class DefaultUsersInitializer {
                 roleService.saveRole(roleAdmin);
                 roleService.saveRole(roleUser);
 
-                User admin = new User("admin", "admin", 20, "admin@admin.com");
+                User admin = new User("admin", "admin", 20, "admin@mail.ru");
                 admin.setPassword("admin");
                 Set<Role> adminRoles = new HashSet<>();
                 adminRoles.add(roleAdmin);
                 admin.setRoles(adminRoles);
 
-                User user = new User("test_user", "test_user", 30, "test@test.com");
+                User user = new User("test_user", "test_user", 30, "user@mail.ru");
                 user.setPassword("user");
                 Set<Role> userRoles = new HashSet<>();
                 userRoles.add(roleUser);

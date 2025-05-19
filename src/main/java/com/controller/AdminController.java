@@ -1,5 +1,6 @@
 package com.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,21 +20,23 @@ public class AdminController {
     }
 
     @GetMapping
-    public String getUsers(Model model) {
+    public String getUsers(Model model, Authentication authentication) {
         model.addAttribute("userList", userService.findAll());
         model.addAttribute("allRoles", userService.getAllRoles());
+        model.addAttribute("user", userService.findUserByEmail(authentication.getName()));
+
         return "admin/admin_panel";
     }
 
     @PostMapping
-    public String addUser(@RequestParam String username,
+    public String addUser(@RequestParam String firstname,
                           @RequestParam String lastname,
                           @RequestParam String email,
                           @RequestParam int age,
                           @RequestParam String password,
                           @RequestParam(required = false) List<String> roleNames) {
         userService.saveUserWithRoles(
-                new User(username, lastname, age, email),
+                new User(firstname, lastname, age, email),
                 password,
                 roleNames);
         return "redirect:/admin";
@@ -48,7 +51,7 @@ public class AdminController {
 
     @PostMapping("/update")
     public String updateUser(@RequestParam("id") Long id,
-                             @RequestParam(value = "username", required = false) String username,
+                             @RequestParam(value = "name", required = false) String firstname,
                              @RequestParam(value = "lastname", required = false) String lastname,
                              @RequestParam(value = "email", required = false) String email,
                              @RequestParam(value = "age", required = false) Integer age,
@@ -56,7 +59,7 @@ public class AdminController {
                              @RequestParam(value = "roles", required = false) List<String> roleNames) {
         userService.update(
                 id,
-                new User(username, lastname, age, email),
+                new User(firstname, lastname, age, email),
                 password,
                 roleNames);
         return "redirect:/admin";

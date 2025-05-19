@@ -22,8 +22,11 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     public String showUserInfo(Model model,
                                Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/login";
+        }
         model.addAttribute("user",
-                userService.findByUsername(authentication.getName()));
+                userService.findByEmail(authentication.getName()));
         return "user/user";
     }
 }

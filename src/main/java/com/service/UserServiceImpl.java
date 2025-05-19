@@ -77,8 +77,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void update(Long id, User user, String password, List<String> roleNames) {
         logger.info("update was called in UserServiceImpl");
         User u = userRepository.findById(id).orElseThrow();
-        if (user.getUsername() != null) {
-            u.setUsername(user.getUsername());
+        if (user.getFirstname() != null) {
+            u.setFirstname(user.getFirstname());
         }
         if (user.getLastname() != null) {
             u.setLastname(user.getLastname());
@@ -108,9 +108,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         logger.info("loadUserByUsername was called in UserServiceImpl");
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -118,9 +118,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Transactional(readOnly = true)
-    public User findByUsername(String username) {
+    public User findByEmail(String email) {
         logger.info("findByUsername was called in UserServiceImpl");
-        return userRepository.findByUsername(username);
+        return userRepository.findByEmail(email);
     }
 
     @Override
@@ -154,5 +154,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             userRoles.add(roleService.findRoleByName(Role.defaultRoleName));
         }
         return userRoles;
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }
