@@ -27,6 +27,6 @@ public class UserController {
         }
         model.addAttribute("user",
                 userService.findByEmail(authentication.getName()));
-        return "user/user";
+        return "user";
     }
 }

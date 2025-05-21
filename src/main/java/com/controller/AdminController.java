@@ -25,7 +25,7 @@ public class AdminController {
         model.addAttribute("allRoles", userService.getAllRoles());
         model.addAttribute("user", userService.findUserByEmail(authentication.getName()));
 
-        return "admin/admin_panel";
+        return "admin";
     }
 
     @PostMapping
@@ -46,12 +46,12 @@ public class AdminController {
     public String showUserUpdatePage(@RequestParam("id") Long id,
                                      Model model) {
         model.addAllAttributes(userService.makeAllUserModelAttributes(id));
-        return "admin/admin_panel";
+        return "admin";
     }
 
     @PostMapping("/update")
     public String updateUser(@RequestParam("id") Long id,
-                             @RequestParam(value = "name", required = false) String firstname,
+                             @RequestParam(value = "firstname", required = false) String firstname,
                              @RequestParam(value = "lastname", required = false) String lastname,
                              @RequestParam(value = "email", required = false) String email,
                              @RequestParam(value = "age", required = false) Integer age,
@@ -74,6 +74,6 @@ public class AdminController {
     @GetMapping("/user")
     public String findUserById(@RequestParam("id") Long id, Model model) {
         model.addAttribute("user", userService.findById(id));
-        return "admin/admin_panel";
+        return "admin";
     }
 }
