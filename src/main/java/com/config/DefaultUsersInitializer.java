@@ -1,21 +1,25 @@
 package com.config;
 
+import com.DTO.UserCreateDTO;
+import com.service.DTO.UserDTOService;
 import jakarta.annotation.PostConstruct;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import com.model.Role;
-import com.model.User;
 import com.service.RoleService;
-import com.service.UserService;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Component
 public class DefaultUsersInitializer {
-    private final UserService userService;
+    private final UserDTOService userService;
     private final RoleService roleService;
 
-    public DefaultUsersInitializer(UserService userService, RoleService roleService) {
+    public DefaultUsersInitializer(
+            @Lazy
+            UserDTOService userService,
+            RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
@@ -30,20 +34,29 @@ public class DefaultUsersInitializer {
                 roleService.saveRole(roleAdmin);
                 roleService.saveRole(roleUser);
 
-                User admin = new User("admin", "admin", 20, "admin@mail.ru");
-                admin.setPassword("admin");
                 Set<Role> adminRoles = new HashSet<>();
                 adminRoles.add(roleAdmin);
-                admin.setRoles(adminRoles);
 
-                User user = new User("test_user", "test_user", 30, "user@mail.ru");
-                user.setPassword("user");
+                UserCreateDTO admin = new UserCreateDTO("admin",
+                        "admin",
+                        "admin@mail.com",
+                        20,
+                        "admin",
+                        adminRoles);
+
                 Set<Role> userRoles = new HashSet<>();
                 userRoles.add(roleUser);
-                user.setRoles(userRoles);
 
-                userService.save(admin);
-                userService.save(user);
+                UserCreateDTO user = new UserCreateDTO(
+                        "user",
+                        "user",
+                        "user@mail.com",
+                        30,
+                        "user",
+                        userRoles);
+
+                userService.create(admin);
+                userService.create(user);
             }
         } catch (Exception e) {
             e.printStackTrace();
